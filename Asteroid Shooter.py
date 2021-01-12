@@ -2,7 +2,7 @@ from vpython import *
 #GlowScript 3.0 VPython
 
 scene.range = 30
-#scene.userspin = False
+scene.userspin = False
 scene.userpan = False
 
 earth = sphere(pos=vector(-235,-380,-350), radius=200, texture={'file':textures.earth,'bumpmap':bumpmaps.earth}, shininess = 0)
@@ -36,7 +36,7 @@ def build_asteroids():
     s2 = sphere(pos=vector(1.75,29.7,-1),radius=1.1)
     s3 = sphere(pos=vector(-1.75,29.7,-1),radius=1.3)
     asteroid1 = compound(([s1,s2]),  texture={'file':textures.rough,'bumpmap':bumpmaps.rock}, color= vector(0.64,0.59,0.57), shininess = 0, velocity=vector(0,-25*random()+0.2,0))
-    asteroid1.pos = vector(60*random()-25*random(),30,-1)
+    asteroid1.pos = vector(55*random()-25*random(),30,-1)
     asteroids.append(asteroid1)
     asteroid2 = compound(([s1,s3]),  texture={'file':textures.rough,'bumpmap':bumpmaps.rock}, color= vector(0.64,0.59,0.6), shininess = 0, velocity=vector(0,-20*random()+0.2,0))
     asteroid2.pos = vector(-25*random()+30*random(),30,-1)
@@ -49,10 +49,10 @@ def deploy_asteroids():
         asteroid.rotate(angle=0.01, axis=vector(0,random(),1))
         
         
-        if(asteroid.pos.y<=30 and asteroid.pos.y>-27.5):
+        if(asteroid.pos.y<=30 and asteroid.pos.y>-30):
             asteroid.visible = True
            # print(asteroid.pos,'Visible')
-        if(asteroid.pos.y>30 or asteroid.pos.y<=-27.5):
+        if(asteroid.pos.y>30 or asteroid.pos.y<=-30):
            # print('invisible')
             asteroid.visible = False
             asteroid.pos.y = 30
@@ -70,36 +70,31 @@ def deploy_asteroids():
             asteroid.pos.y = 30
             asteroid.pos.x = -25*random()+30*random()
             asteroid.velocity.y = -22*random()+0.5
-            
-        '''if((abs(bullet1.pos.x -asteroid.pos.x)<1 and abs(bullet1.pos.y-asteroid.pos.y)<1)
-            or(abs(bullet2.pos.x -asteroid.pos.x)<1 and abs(bullet2.pos.y-asteroid.pos.y)<1)):
-                asteroid.visible = False
-                asteroid.pos.y = 30
-                asteroid.pos.x = -25*random()+30*random()
-                asteroid.velocity.y = -22*random()+0.5'''
                 
 def showSphere(evt):
-    bullet_t = 0
-    global dt,score,life
-    loc1 = ship.pos+ vector(0.275,2,-1)
-    loc2 = ship.pos+vector(-0.275,2,-1)
-    bullet1 = sphere(pos=loc1, radius=0.2, color=color.orange, velocity=vector(0,15,0))
-    bullet2 = sphere(pos=loc2, radius=0.2, color=color.orange, velocity=vector(0,15,0))
-    while(bullet_t>=0):
-        rate(80)
-        bullet_t+=dt
-        bullet1.pos = loc1+(bullet1.velocity*bullet_t)
-        bullet2.pos = loc2+(bullet2.velocity*bullet_t)
-        #asteroid.pos = vector(0,30,-1)+(asteroid.velocity*t)
-        #asteroid.rotate(angle=0.01, axis=vector(0,1,1))
-        for asteroid in asteroids:
-            if((abs(bullet1.pos.x -asteroid.pos.x)<2 and abs(bullet1.pos.y-asteroid.pos.y)<1)
-                or(abs(bullet2.pos.x -asteroid.pos.x)<2 and abs(bullet2.pos.y-asteroid.pos.y)<1)):
-                    score+=1
-                    asteroid.visible = False
-                    asteroid.pos.y = 30
-                    asteroid.pos.x = -25*random()+30*random()
-                    asteroid.velocity.y = -22*random()+0.5
+    if life > 0:
+        bullet_t = 0
+        global dt,score,life
+        loc1 = ship.pos+ vector(0.275,2,-1)
+        loc2 = ship.pos+vector(-0.275,2,-1)
+        bullet1 = sphere(pos=loc1, radius=0.2, color=color.orange, velocity=vector(0,15,0))
+        bullet2 = sphere(pos=loc2, radius=0.2, color=color.orange, velocity=vector(0,15,0))
+        while(bullet_t>=0):
+            rate(80)
+            bullet_t+=dt
+            bullet1.pos = loc1+(bullet1.velocity*bullet_t)
+            bullet2.pos = loc2+(bullet2.velocity*bullet_t)
+            #asteroid.pos = vector(0,30,-1)+(asteroid.velocity*t)
+            #asteroid.rotate(angle=0.01, axis=vector(0,1,1))
+            for asteroid in asteroids:
+                if((abs(bullet1.pos.x -asteroid.pos.x)<2 and abs(bullet1.pos.y-asteroid.pos.y)<1)
+                    or(abs(bullet2.pos.x -asteroid.pos.x)<2 and abs(bullet2.pos.y-asteroid.pos.y)<1)):
+                        score+=1
+                        asteroid.visible = False
+                        asteroid.pos.y = 30
+                        asteroid.pos.x = -25*random()+30*random()
+                        asteroid.velocity.y = -22*random()+0.5
+                    
                     
 
 scene.bind('click', showSphere)
@@ -110,7 +105,7 @@ def down():
 
 def move():
     global drag, s
-    if drag: # mouse button is down
+    if drag and life: # mouse button is down and life!=0
         s.pos = scene.mouse.pos
         if(s.pos.y > -20):
             s.pos.y = -20
