@@ -27,6 +27,9 @@ bullet2 = None
 score = 0
 life = 3
 mylabel = label(pos = vec(-40,25,0))
+hit_msg = text(text='HIT', height = 3,
+     align='center', color=color.red)
+hit_msg.visible = False
 
 asteroids = []
         
@@ -51,9 +54,7 @@ def deploy_asteroids():
         
         if(asteroid.pos.y<=30 and asteroid.pos.y>-30):
             asteroid.visible = True
-           # print(asteroid.pos,'Visible')
         if(asteroid.pos.y>30 or asteroid.pos.y<=-30):
-           # print('invisible')
             asteroid.visible = False
             asteroid.pos.y = 30
             asteroid.pos.x = -25*random()+30*random()
@@ -62,16 +63,18 @@ def deploy_asteroids():
             
         if(abs(s.pos.x - asteroid.pos.x)<=1.5 and abs(s.pos.y-asteroid.pos.y)<=2):
             s.visible = False
-            print('HIT')
+            hit_msg.visible = True
             sleep(0.5)
+            hit_msg.visible = False
             life-=1
             s.visible = True 
             asteroid.visible = False
             asteroid.pos.y = 30
             asteroid.pos.x = -25*random()+30*random()
             asteroid.velocity.y = -22*random()+0.5
-                
-def showSphere(evt):
+
+
+def showBullet(evt):
     if life > 0:
         bullet_t = 0
         global dt,score,life
@@ -84,8 +87,6 @@ def showSphere(evt):
             bullet_t+=dt
             bullet1.pos = loc1+(bullet1.velocity*bullet_t)
             bullet2.pos = loc2+(bullet2.velocity*bullet_t)
-            #asteroid.pos = vector(0,30,-1)+(asteroid.velocity*t)
-            #asteroid.rotate(angle=0.01, axis=vector(0,1,1))
             for asteroid in asteroids:
                 if((abs(bullet1.pos.x -asteroid.pos.x)<2 and abs(bullet1.pos.y-asteroid.pos.y)<1)
                     or(abs(bullet2.pos.x -asteroid.pos.x)<2 and abs(bullet2.pos.y-asteroid.pos.y)<1)):
@@ -97,7 +98,7 @@ def showSphere(evt):
                     
                     
 
-scene.bind('click', showSphere)
+scene.bind('click', showBullet)
 
 def down():
     global drag, s
@@ -127,7 +128,7 @@ while (True):
     mylabel.text = 'life : ' + life + '\n' + 'score : ' + score
     
     if life==0:
-        mylabel.text='GAME OVER'
+        mylabel.text='GAME OVER\nScore : '+str(score)
         mylabel.pos = vector(0,0,0)
         break;
         
