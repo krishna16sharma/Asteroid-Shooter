@@ -1,5 +1,6 @@
 # Asteroid-Shooter
-A simple game created using vPython
+A simple game created using vPython.<br>
+Your objective is to destroy as many asteroids as possible before they go past you.
 
 
 ## How to run
@@ -14,3 +15,11 @@ You can upgrade to later versions of vpython `conda update -c vpython vpython` o
 Do remember to import vpython in your program! You can import it by including the line `from vpython import *`<br>
 
 Now you should be able to run it in Spyder, Jupyter Notebook or IDLE.
+
+## How to play
+All you need to play this game is a mouse.<br>
+Left-Click to shoot bullets and drag the mouse to move the space ship.
+
+## Screenshots
+<img src='Screenshots/Gameplay - 1.png' height='326' width='520'>
+<img src='Screenshots/Gameplay - 2.png' height='326' width='520'>
